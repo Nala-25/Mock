@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <base target="_top">
+
+  <!-- Mobile-first viewport -->
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+  >
+
+  <title>BuCor Promotion Mock Exam</title>
+
+  <style>
+    /* =========================================================
+       BUCOR PROMOTION MOCK EXAM
+       Mobile-first compact + touch-friendly design
+       ========================================================= */
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      min-width: 100%;
+      min-height: 100%;
+      background: #F7EAE0;
+    }
+
+    html {
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Helvetica,
+        Arial,
+        sans-serif;
+      color: #5E3122;
+      overflow-x: hidden;
+      min-height: 100vh;
+      min-height: 100dvh;
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+    }
+
+    button {
+      touch-action: manipulation;
+      font-family: inherit;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* =========================================================
+       APP CONTAINER
+       ========================================================= */
+
+    #app {
+      position: relative;
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
+      min-height: 100vh;
+      min-height: 100dvh;
+      margin: 0;
+      padding: 0;
+      background: #F7EAE0;
+      overflow-x: hidden;
+    }
+
+    /* =========================================================
+       HEADER
+       ========================================================= */
+
+    .top-header {
+      width: 100%;
+      background: #F9D2BA;
+      padding: calc(8px + env(safe-area-inset-top, 0px)) max(12px, env(safe-area-inset-right, 0px)) 10px max(12px, env(safe-area-inset-left, 0px));
+      border-bottom: 1px solid rgba(94, 49, 34, .10);
+      box-shadow: 0 2px 8px rgba(94, 49, 34, .08);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-row {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .brand-area {
+      min-width: 0;
+      flex: 1 1 auto;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .ey-logo {
+      width: 30px;
+      height: 30px;
+      flex: 0 0 30px;
+    }
+
+    .ey-logo svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .brand-text {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: #5E3122;
+      font-size: clamp(10px, 3.2vw, 12px);
+      font-weight: 900;
+      letter-spacing: .35px;
+    }
+
+    .question-counter {
+      flex: 0 0 auto;
+      color: #5E3122;
+      font-size: clamp(10px, 3.2vw, 12px);
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 6px;
+      margin-top: 8px;
+      overflow: hidden;
+      border-radius: 99px;
+      background: rgba(255, 255, 255, .75);
+    }
+
+    .progress-bar {
+      width: 0%;
+      height: 100%;
+      border-radius: 99px;
+      background: #5E3122;
+      transition: width .3s ease;
+    }
+
+    /* =========================================================
+       LOADING SCREEN
+       ========================================================= */
+
+    .loading-screen {
+      width: 100%;
+      min-height: calc(100vh - 80px);
+      min-height: calc(100dvh - 80px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px;
+      text-align: center;
+    }
+
+    .spinner {
+      width: 36px;
+      height: 36px;
+      margin-bottom: 12px;
+      border: 4px solid #F9D2BA;
+      border-top-color: #5E3122;
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .loading-title {
+      margin-bottom: 6px;
+      color: #5E3122;
+      font-size: 17px;
+      font-weight: 900;
+    }
+
+    .loading-text {
+      color: rgba(94, 49, 34, .75);
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    /* =========================================================
+       START & FINISH SCREENS
+       ========================================================= */
+
+    .start-screen,
+    .finish-screen {
+      width: 100%;
+      min-height: calc(100vh - 80px);
+      min-height: calc(100dvh - 80px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 24px max(16px, env(safe-area-inset-right, 0px)) 24px max(16px, env(safe-area-inset-left, 0px));
+      text-align: center;
+    }
+
+    .app-icon, .finish-icon {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 18px;
+      background: #F9D2BA;
+      color: #5E3122;
+      font-family: Georgia, serif;
+      font-size: 26px;
+      font-weight: 900;
+      box-shadow: 0 8px 20px rgba(94, 49, 34, .10);
+    }
+
+    .finish-icon {
+      border-radius: 50%;
+    }
+
+    .start-title,
+    .finish-title {
+      margin: 0 0 8px;
+      color: #5E3122;
+      font-size: clamp(22px, 6vw, 26px);
+      line-height: 1.2;
+      font-weight: 900;
+    }
+
+    .start-subtitle,
+    .finish-subtitle {
+      max-width: 340px;
+      margin: 0 auto 20px;
+      color: rgba(94, 49, 34, .75);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .start-info,
+    .results {
+      width: 100%;
+      margin: 0 auto 20px;
+      overflow: hidden;
+      border: 1px solid #F9D2BA;
+      border-radius: 14px;
+      background: #FFFFFF;
+      box-shadow: 0 4px 14px rgba(94, 49, 34, .05);
+    }
+
+    .info-row,
+    .result-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 14px;
+      font-size: 13px;
+    }
+
+    .info-row + .info-row,
+    .result-row + .result-row {
+      border-top: 1px solid #F7EAE0;
+    }
+
+    .info-label,
+    .result-label {
+      color: rgba(94, 49, 34, .70);
+    }
+
+    .info-value,
+    .result-value {
+      color: #5E3122;
+      font-weight: 900;
+    }
+
+    .primary-btn {
+      width: 100%;
+      min-height: 50px;
+      border: 0;
+      border-radius: 12px;
+      background: #5E3122;
+      color: #FFFFFF;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 6px 16px rgba(94, 49, 34, .18);
+    }
+
+    .primary-btn:active {
+      transform: scale(.98);
+    }
+
+    /* =========================================================
+       EXAM SCREEN & CONTENT
+       ========================================================= */
+
+    .exam-screen {
+      width: 100%;
+      min-width: 0;
+    }
+
+    .content {
+      width: 100%;
+      margin: 0;
+      padding: 12px max(12px, env(safe-area-inset-right, 0px)) 110px max(12px, env(safe-area-inset-left, 0px));
+    }
+
+    .module-label {
+      display: inline-block;
+      max-width: 100%;
+      margin-bottom: 8px;
+      padding: 5px 9px;
+      border-radius: 6px;
+      background: #F9D2BA;
+      color: #5E3122;
+      font-size: 10px;
+      font-weight: 900;
+      line-height: 1.3;
+      letter-spacing: .3px;
+      text-transform: uppercase;
+    }
+
+    .question-label {
+      margin-bottom: 6px;
+      color: #5E3122;
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: .8px;
+    }
+
+    .question {
+      margin: 0 0 14px;
+      color: #5E3122;
+      font-size: clamp(16px, 4.5vw, 19px);
+      line-height: 1.4;
+      font-weight: 800;
+      overflow-wrap: anywhere;
+    }
+
+    /* =========================================================
+       ANSWER CHOICES
+       ========================================================= */
+
+    .choices {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .choice {
+      width: 100%;
+      min-height: 52px;
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border: 1.5px solid #F9D2BA;
+      border-radius: 12px;
+      background: #FFFFFF;
+      color: #5E3122;
+      font-size: 13.5px;
+      line-height: 1.35;
+      text-align: left;
+      cursor: pointer;
+      transition: background .15s ease, border-color .15s ease, transform .1s ease;
+    }
+
+    .choice:active {
+      transform: scale(.985);
+    }
+
+    .choice:disabled {
+      cursor: default;
+    }
+
+    .letter {
+      width: 32px;
+      height: 32px;
+      flex: 0 0 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #F9D2BA;
+      border-radius: 50%;
+      background: #F7EAE0;
+      color: #5E3122;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .choice.correct {
+      border-color: #5D9C70;
+      background: #EEF7F0;
+      color: #356342;
+    }
+
+    .choice.correct .letter {
+      border-color: #5D9C70;
+      background: #5D9C70;
+      color: #FFFFFF;
+    }
+
+    .choice.wrong {
+      border-color: #D66A6A;
+      background: #FFF0F0;
+      color: #963D3D;
+    }
+
+    .choice.wrong .letter {
+      border-color: #D66A6A;
+      background: #D66A6A;
+      color: #FFFFFF;
+    }
+
+    /* =========================================================
+       FEEDBACK
+       ========================================================= */
+
+    .feedback {
+      display: none;
+      width: 100%;
+      margin-top: 10px;
+      padding: 12px;
+      border-radius: 12px;
+      font-size: 12.5px;
+      line-height: 1.45;
+    }
+
+    .feedback.show {
+      display: block;
+      animation: fadeIn .2s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(4px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .feedback.correct {
+      border: 1px solid #9BCBA7;
+      background: #EEF7F0;
+      color: #356342;
+    }
+
+    .feedback.wrong {
+      border: 1px solid #E5A0A0;
+      background: #FFF0F0;
+      color: #963D3D;
+    }
+
+    .feedback-title {
+      margin-bottom: 3px;
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .correct-answer {
+      margin-top: 5px;
+    }
+
+    .correct-answer strong {
+      font-weight: 900;
+    }
+
+    .retry-note {
+      margin-top: 5px;
+      font-size: 11.5px;
+      font-weight: 800;
+    }
+
+    /* =========================================================
+       RESTART AREA
+       ========================================================= */
+
+    .restart-area {
+      width: 100%;
+      margin-top: 16px;
+      padding-top: 10px;
+      border-top: 1px solid #EAD8D0;
+      text-align: center;
+    }
+
+    .restart-btn {
+      border: 0;
+      border-radius: 8px;
+      padding: 10px 16px;
+      background: #F9D2BA;
+      color: #5E3122;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    /* =========================================================
+       FIXED BOTTOM ACTION BAR
+       ========================================================= */
+
+    .bottom-action {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      padding: 8px 12px calc(8px + env(safe-area-inset-bottom, 0px));
+      border-top: 1px solid #EAD8D0;
+      background: rgba(247, 234, 224, .95);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      z-index: 150;
+    }
+
+    .next-btn {
+      width: 100%;
+      min-height: 52px;
+      border: 0;
+      border-radius: 12px;
+      background: #5E3122;
+      color: #FFFFFF;
+      font-size: 16px;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 6px 16px rgba(94, 49, 34, .20);
+    }
+
+    .next-btn:active {
+      transform: scale(.985);
+    }
+
+    /* =========================================================
+       ERROR BOX
+       ========================================================= */
+
+    .error-box {
+      width: 100%;
+      margin: 16px 0;
+      padding: 12px;
+      border: 1px solid #E5A0A0;
+      border-radius: 12px;
+      background: #FFF0F0;
+      color: #963D3D;
+      font-size: 12px;
+      line-height: 1.45;
+      text-align: left;
+    }
+
+    /* =========================================================
+       TABLET & DESKTOP OVERRIDE
+       ========================================================= */
+
+    @media (min-width: 600px) and (hover: hover) {
+      body {
+        padding: 20px 0;
+      }
+
+      #app {
+        width: min(520px, 100%);
+        max-width: 520px;
+        min-height: calc(100vh - 40px);
+        min-height: calc(100dvh - 40px);
+        margin: 0 auto;
+        border-radius: 20px;
+        box-shadow: 0 12px 40px rgba(94, 49, 34, .12);
+      }
+
+      .bottom-action {
+        left: 50%;
+        right: auto;
+        width: min(520px, 100%);
+        transform: translateX(-50%);
+        border-bottom-left-radius: 20px;
+        border-bottom-right-radius: 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="app">
+
+    <!-- HEADER -->
+    <header class="top-header">
+      <div class="header-row">
+        <div class="brand-area">
+          <div class="ey-logo" aria-label="Ey">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <circle cx="50" cy="50" r="47" fill="#F9D2BA" />
+              <circle cx="50" cy="50" r="40" fill="#F7EAE0" stroke="#5E3122" stroke-width="2" />
+              <text x="50" y="64" text-anchor="middle" font-family="Georgia, serif" font-size="42" font-weight="bold" fill="#5E3122">Ey</text>
+            </svg>
+          </div>
+          <div class="brand-text">BUCOR PROMOTION EXAM</div>
+        </div>
+        <div id="counter" class="question-counter">Question 0 of 0</div>
+      </div>
+      <div class="progress-track">
+        <div id="progress" class="progress-bar"></div>
+      </div>
+    </header>
+
+    <!-- LOADING SCREEN -->
+    <section id="loading" class="loading-screen">
+      <div class="spinner"></div>
+      <div class="loading-title">Loading Exam</div>
+      <div class="loading-text">Please wait while questions are prepared...</div>
+    </section>
+
+    <!-- START SCREEN -->
+    <section id="startScreen" class="start-screen hidden">
+      <div class="app-icon">Ey</div>
+      <h1 class="start-title">BuCor Promotion<br>Mock Exam</h1>
+      <p class="start-subtitle">Test your knowledge and prepare for your upcoming promotion examination.</p>
+
+      <div class="start-info">
+        <div class="info-row">
+          <span class="info-label">Questions</span>
+          <span id="totalQuestionsCount" class="info-value">0</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Format</span>
+          <span class="info-value">Multiple Choice</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Practice Mode</span>
+          <span class="info-value">Immediate Feedback</span>
+        </div>
+      </div>
+
+      <button type="button" class="primary-btn" onclick="startExam()">
+        Start Examination →
+      </button>
+    </section>
+
+    <!-- EXAM SCREEN -->
+    <main id="examScreen" class="exam-screen hidden">
+      <div class="content">
+        <div id="module" class="module-label"></div>
+        <div class="question-label">QUESTION</div>
+        <h2 id="question" class="question"></h2>
+
+        <div id="choices" class="choices"></div>
+        <div id="feedback" class="feedback"></div>
+
+        <div class="restart-area">
+          <button type="button" class="restart-btn" onclick="restartExam()">
+            Restart Exam
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <!-- FINISH SCREEN -->
+    <section id="finishScreen" class="finish-screen hidden">
+      <div class="finish-icon">✓</div>
+      <div class="finish-title">Exam Complete</div>
+      <div class="finish-subtitle">You have completed all questions.</div>
+
+      <div class="results">
+        <div class="result-row">
+          <span class="result-label">First-Try Correct</span>
+          <span id="firstTryScore" class="result-value">0/0</span>
+        </div>
+        <div class="result-row">
+          <span class="result-label">Total Attempts</span>
+          <span id="totalAttempts" class="result-value">0</span>
+        </div>
+        <div class="result-row">
+          <span class="result-label">Completion</span>
+          <span id="finalScore" class="result-value">100%</span>
+        </div>
+      </div>
+
+      <button type="button" class="primary-btn" onclick="restartExam()">
+        Take Exam Again
+      </button>
+    </section>
+
+    <!-- FIXED NEXT BUTTON -->
+    <div id="bottomAction" class="bottom-action hidden">
+      <button type="button" id="nextBtn" class="next-btn" onclick="nextQuestion()">
+        Next Question →
+      </button>
+    </div>
+
+  </div>
+
+  <script>
+    /* =========================================================
+       EXAM DATA SOURCE
+       Add or replace questions here directly.
+       ========================================================= */
+    const examData = [
+      {
+        id: 1,
+        module: "GENERAL JURISPRUDENCE",
+        question: "What is the primary mandate of the Bureau of Corrections (BuCor)?",
+        choices: [
+          "Safekeeping and instituting reformation programs for national inmates",
+          "Conducting preliminary investigations for criminal cases",
+          "Managing municipal and city jail facilities nationwide",
+          "Enforcing traffic laws along national highways"
+        ],
+        correctAnswer: "A",
+        correctText: "Safekeeping and instituting reformation programs for national inmates"
+      },
+      {
+        id: 2,
+        module: "CORRECTIONAL ADMINISTRATION",
+        question: "Under RA 10575, who exercises administrative supervision over the Bureau of Corrections?",
+        choices: [
+          "Department of the Interior and Local Government (DILG)",
+          "Department of Justice (DOJ)",
+          "Bureau of Jail Management and Penology (BJMP)",
+          "Office of the President"
+        ],
+        correctAnswer: "B",
+        correctText: "Department of Justice (DOJ)"
+      }
+    ];
+
+    /* =========================================================
+       STATE
+       ========================================================= */
+    let exam = [];
+    let current = 0;
+    let attempts = 0;
+    let firstTryCorrect = 0;
+    let attemptsForThisQuestion = 0;
+    let answeredCurrent = false;
+
+    /* =========================================================
+       INITIALIZATION
+       ========================================================= */
+    window.addEventListener('DOMContentLoaded', function() {
+      // Load questions directly from examData
+      exam = examData || [];
+
+      document.getElementById('loading').classList.add('hidden');
+
+      if (!Array.isArray(exam) || exam.length === 0) {
+        showLoadError('No questions available to load.');
+        return;
+      }
+
+      document.getElementById('totalQuestionsCount').textContent = exam.length;
+      document.getElementById('startScreen').classList.remove('hidden');
+    });
+
+    /* =========================================================
+       LOAD ERROR
+       ========================================================= */
+    function showLoadError(message) {
+      document.getElementById('loading').classList.add('hidden');
+      const screen = document.getElementById('startScreen');
+      screen.classList.remove('hidden');
+      screen.innerHTML =
+        '<div class="app-icon">!</div>' +
+        '<h1 class="start-title">Unable to Load Exam</h1>' +
+        '<div class="error-box">' + escapeHtml(message) + '</div>';
+    }
+
+    /* =========================================================
+       START EXAM
+       ========================================================= */
+    function startExam() {
+      current = 0;
+      attempts = 0;
+      firstTryCorrect = 0;
+      attemptsForThisQuestion = 0;
+      answeredCurrent = false;
+
+      document.getElementById('startScreen').classList.add('hidden');
+      document.getElementById('finishScreen').classList.add('hidden');
+      document.getElementById('examScreen').classList.remove('hidden');
+      document.getElementById('bottomAction').classList.add('hidden');
+
+      renderQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    /* =========================================================
+       RENDER QUESTION
+       ========================================================= */
+    function renderQuestion() {
+      const q = exam[current];
+      answeredCurrent = false;
+      attemptsForThisQuestion = 0;
+
+      document.getElementById('module').textContent = q.module || '';
+      document.getElementById('counter').textContent = 'Question ' + (current + 1) + ' of ' + exam.length;
+      document.getElementById('progress').style.width = ((current / exam.length) * 100) + '%';
+      document.getElementById('question').textContent = q.id + '. ' + q.question;
+
+      const choicesContainer = document.getElementById('choices');
+      choicesContainer.innerHTML = '';
+
+      ['A', 'B', 'C', 'D'].forEach(function(letter, index) {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'choice';
+
+        const letterSpan = document.createElement('span');
+        letterSpan.className = 'letter';
+        letterSpan.textContent = letter;
+
+        const textSpan = document.createElement('span');
+        textSpan.textContent = q.choices[index];
+
+        button.appendChild(letterSpan);
+        button.appendChild(textSpan);
+
+        button.onclick = function() {
+          selectAnswer(letter, button);
+        };
+
+        choicesContainer.appendChild(button);
+      });
+
+      const feedback = document.getElementById('feedback');
+      feedback.className = 'feedback';
+      feedback.innerHTML = '';
+
+      document.getElementById('bottomAction').classList.add('hidden');
+      document.getElementById('nextBtn').classList.add('hidden');
+    }
+
+    /* =========================================================
+       ANSWER CHECKING
+       ========================================================= */
+    function selectAnswer(letter, selectedButton) {
+      if (answeredCurrent) return;
+
+      attempts++;
+      attemptsForThisQuestion++;
+
+      const q = exam[current];
+
+      if (!q.correctAnswer) {
+        showLoadError('Correct answer is missing for Question ' + q.id + '.');
+        return;
+      }
+
+      const correctAnswer = String(q.correctAnswer).trim().toUpperCase();
+      const correctText = q.correctText || q.choices[correctAnswer.charCodeAt(0) - 65];
+
+      const buttons = document.querySelectorAll('.choice');
+      buttons.forEach(function(button) { button.disabled = true; });
+
+      const feedback = document.getElementById('feedback');
+      const bottomAction = document.getElementById('bottomAction');
+      const nextBtn = document.getElementById('nextBtn');
+
+      if (letter === correctAnswer) {
+        answeredCurrent = true;
+        if (attemptsForThisQuestion === 1) firstTryCorrect++;
+
+        selectedButton.classList.add('correct');
+        feedback.className = 'feedback show correct';
+        feedback.innerHTML =
+          '<div class="feedback-title">✓ Correct!</div>' +
+          '<div>You selected the correct answer.</div>' +
+          '<div class="correct-answer"><strong>Correct answer:</strong> ' + escapeHtml(correctAnswer) + '. ' + escapeHtml(correctText) + '</div>';
+
+        nextBtn.textContent = current === exam.length - 1 ? 'Finish Exam →' : 'Next Question →';
+        bottomAction.classList.remove('hidden');
+        nextBtn.classList.remove('hidden');
+
+        document.getElementById('progress').style.width = (((current + 1) / exam.length) * 100) + '%';
+        return;
+      }
+
+      selectedButton.classList.add('wrong');
+      buttons.forEach(function(button) {
+        if (getButtonLetter(button) === correctAnswer) {
+          button.classList.add('correct');
+        }
+      });
+
+      feedback.className = 'feedback show wrong';
+      feedback.innerHTML =
+        '<div class="feedback-title">✗ Incorrect</div>' +
+        '<div>Your selected answer is incorrect.</div>' +
+        '<div class="correct-answer"><strong>Correct answer:</strong> ' + escapeHtml(correctAnswer) + '. ' + escapeHtml(correctText) + '</div>' +
+        '<div class="retry-note">Please select the correct answer to continue.</div>';
+
+      bottomAction.classList.add('hidden');
+      nextBtn.classList.add('hidden');
+
+      setTimeout(function() {
+        buttons.forEach(function(button) { button.disabled = false; });
+      }, 500);
+    }
+
+    /* =========================================================
+       GET CHOICE LETTER
+       ========================================================= */
+    function getButtonLetter(button) {
+      const letter = button.querySelector('.letter');
+      return letter ? letter.textContent.trim() : '';
+    }
+
+    /* =========================================================
+       NEXT QUESTION
+       ========================================================= */
+    function nextQuestion() {
+      if (!answeredCurrent) return;
+
+      if (current < exam.length - 1) {
+        current++;
+        renderQuestion();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        finishExam();
+      }
+    }
+
+    /* =========================================================
+       FINISH
+       ========================================================= */
+    function finishExam() {
+      document.getElementById('examScreen').classList.add('hidden');
+      document.getElementById('bottomAction').classList.add('hidden');
+      document.getElementById('finishScreen').classList.remove('hidden');
+
+      document.getElementById('firstTryScore').textContent = firstTryCorrect + '/' + exam.length;
+      document.getElementById('totalAttempts').textContent = attempts;
+      document.getElementById('finalScore').textContent = '100%';
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    /* =========================================================
+       RESTART
+       ========================================================= */
+    function restartExam() {
+      if (confirm('Restart the examination? Your current progress will be lost.')) {
+        startExam();
+      }
+    }
+
+    /* =========================================================
+       HTML ESCAPING
+       ========================================================= */
+    function escapeHtml(value) {
+      return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+  </script>
+</body>
+</html>
