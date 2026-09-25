@@ -10,7 +10,7 @@
     content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
   >
 
-  <title>BuCor Promotion Mock Exam</title>
+  <title>BuCor Promotion Mock Exam — Set 1</title>
 
   <style>
     /* =========================================================
@@ -638,13 +638,13 @@
     <!-- START SCREEN -->
     <section id="startScreen" class="start-screen hidden">
       <div class="app-icon">Ey</div>
-      <h1 class="start-title">BuCor Promotion<br>Mock Exam</h1>
+      <h1 class="start-title">BuCor Promotion<br>Mock Exam — Set 1</h1>
       <p class="start-subtitle">Test your knowledge and prepare for your upcoming promotion examination.</p>
 
       <div class="start-info">
         <div class="info-row">
           <span class="info-label">Questions</span>
-          <span id="totalQuestionsCount" class="info-value">0</span>
+          <span id="totalQuestionsCount" class="info-value">100</span>
         </div>
         <div class="info-row">
           <span class="info-label">Format</span>
@@ -716,40 +716,135 @@
 
   <script>
     /* =========================================================
-       EXAM DATA SOURCE
-       Add or replace questions here directly.
+       ANSWER KEYS
        ========================================================= */
-    const examData = [
-      {
-        id: 1,
-        module: "GENERAL JURISPRUDENCE",
-        question: "What is the primary mandate of the Bureau of Corrections (BuCor)?",
-        choices: [
-          "Safekeeping and instituting reformation programs for national inmates",
-          "Conducting preliminary investigations for criminal cases",
-          "Managing municipal and city jail facilities nationwide",
-          "Enforcing traffic laws along national highways"
-        ],
-        correctAnswer: "A",
-        correctText: "Safekeeping and instituting reformation programs for national inmates"
-      },
-      {
-        id: 2,
-        module: "CORRECTIONAL ADMINISTRATION",
-        question: "Under RA 10575, who exercises administrative supervision over the Bureau of Corrections?",
-        choices: [
-          "Department of the Interior and Local Government (DILG)",
-          "Department of Justice (DOJ)",
-          "Bureau of Jail Management and Penology (BJMP)",
-          "Office of the President"
-        ],
-        correctAnswer: "B",
-        correctText: "Department of Justice (DOJ)"
-      }
+    const SOURCE_ANSWER_KEY = {
+      "1":"B","2":"B","3":"B","4":"C","5":"A","6":"C","7":"A","8":"B","9":"B","10":"B",
+      "11":"A","12":"A","13":"A","14":"A","15":"C","16":"B","17":"A","18":"B","19":"A","20":"B",
+      "21":"B","22":"A","23":"B","24":"B","25":"A","26":"B","27":"B","28":"B","29":"B","30":"B",
+      "31":"A","32":"A","33":"B","34":"B","35":"B","36":"B","37":"A","38":"A","39":"B","40":"B",
+      "41":"A","42":"B","43":"B","44":"B","45":"B","46":"A","47":"C","48":"B","49":"B","50":"B",
+      "51":"C","52":"A","53":"B","54":"B","55":"B","56":"B","57":"A","58":"B","59":"B","60":"B",
+      "61":"C","62":"C","63":"B","64":"B","65":"C","66":"C","67":"C","68":"B","69":"B","70":"C",
+      "71":"C","72":"B","73":"B","74":"D","75":"C","76":"B","77":"C","78":"C","79":"B","80":"B",
+      "81":"D","82":"B","83":"D","84":"A","85":"B","86":"D","87":"A","88":"B","89":"A","90":"C",
+      "91":"B","92":"B","93":"B","94":"B","95":"B","96":"B","97":"B","98":"B","99":"B","100":"B"
+    };
+
+    const REVIEWED_ANSWER_KEY = Object.assign({}, SOURCE_ANSWER_KEY, {
+      "53": "C",
+      "54": "A",
+      "59": "A"
+    });
+
+    /* =========================================================
+       RAW QUESTIONS ARRAY (1-100)
+       ========================================================= */
+    const RAW_QUESTIONS = [
+      { id: 1, module: "MODULE 1 — BUCOR, RA 10575 & BUCOR MANUAL", question: "Republic Act No. 10575 is known as:", choices: ["Philippine Penology Act", "Bureau of Corrections Act of 2013", "Corrections Modernization Act", "National Prison Act"] },
+      { id: 2, module: "MODULE 1 — BUCOR, RA 10575 & BUCOR MANUAL", question: "The Bureau of Corrections is an agency under the:", choices: ["DILG", "DOJ", "DSWD", "Office of the Ombudsman"] },
+      { id: 3, module: "MODULE 1 — BUCOR, RA 10575 & BUCOR MANUAL", question: "Which best describes BuCor's core mandate?", choices: ["Investigation and prosecution", "Safekeeping and instituting reformation programs for PDLs under its jurisdiction", "Administration of municipal jails", "Crime prevention in communities"] },
+      { id: 4, module: "MODULE 1 — BUCOR, RA 10575 & BUCOR MANUAL", question: "Under the BuCor Manual, BuCor generally has responsibility for national PDLs sentenced to:", choices: ["More than 1 year", "More than 2 years", "More than 3 years", "More than 6 years"] },
+      { id: 5, module: "MODULE 1 — BUCOR, RA 10575 & BUCOR MANUAL", question: "Which of the following may fall under BuCor regardless of length of sentence as specified in its mandate?", choices: ["Violations of Customs, Immigration, or Election laws", "All traffic violations", "All municipal ordinance violations", "All civil cases"] },
+      { id: 6, module: "MODULE 1 — BUCOR, RA 10575 & BUCOR MANUAL", question: "Which two concepts lie at the center of BuCor's mandate?", choices: ["Arrest and investigation", "Prosecution and punishment", "Safekeeping and reformation", "Surveillance and prosecution"] },
+      { id: 7, module: "MODULE 1 — BUCOR, RA 10575 & BUCOR MANUAL", question: "Which activity most directly supports reformation?", choices: ["Vocational and livelihood training", "Increasing restrictions without assessment", "Criminal investigation", "Election monitoring"] },
+      { id: 8, module: "MODULE 1 — BUCOR, RA 10575 & BUCOR MANUAL", question: "BuCor was formerly known as the:", choices: ["Bureau of Penology", "Bureau of Prisons", "National Corrections Service", "Philippine Prison Authority"] },
+      { id: 9, module: "MODULE 1 — BUCOR, RA 10575 & BUCOR MANUAL", question: "Which is part of BuCor's published functions?", choices: ["Prosecute criminal cases", "Provide PDLs with basic necessities according to applicable laws and regulations", "Operate all municipal jails", "Issue criminal judgments"] },
+      { id: 10, module: "MODULE 1 — BUCOR, RA 10575 & BUCOR MANUAL", question: "Establishing linkages with government agencies and NGOs primarily assists:", choices: ["Criminal prosecution", "Reintegration of released PDLs", "Judicial sentencing", "Police operations"] },
+      { id: 11, module: "MODULE 1 — BUCOR, RA 10575 & BUCOR MANUAL", question: "BuCor's security responsibility includes:", choices: ["Implementing effective security measures for confined PDLs", "Conducting municipal patrols", "Prosecuting escape cases", "Guarding every local government jail"] },
+      { id: 12, module: "MODULE 1 — BUCOR, RA 10575 & BUCOR MANUAL", question: "Which is most consistent with holistic reformation?", choices: ["Addressing multiple dimensions of PDL development", "Focusing exclusively on punishment", "Eliminating education", "Preventing all family interaction"] },
+      { id: 13, module: "MODULE 1 — BUCOR, RA 10575 & BUCOR MANUAL", question: "Continuous training and development of personnel primarily supports:", choices: ["Professionalization and organizational capability", "Political participation", "Private employment", "Reduction of accountability"] },
+      { id: 14, module: "MODULE 1 — BUCOR, RA 10575 & BUCOR MANUAL", question: "Adequate correctional facilities contribute most directly to:", choices: ["Safekeeping and effective correctional operations", "Criminal prosecution", "Court administration", "Police patrol"] },
+      { id: 15, module: "MODULE 1 — BUCOR, RA 10575 & BUCOR MANUAL", question: "Which statement BEST reflects modern BuCor administration?", choices: ["Security is the only concern.", "Rehabilitation is the only concern.", "Effective corrections requires both secure custody and reformation.", "PDL management is primarily a judicial function."] },
+      { id: 16, module: "MODULE 2 — PENOLOGY, CORRECTIONS & PDL MANAGEMENT", question: "Penology is primarily concerned with:", choices: ["Crime-scene investigation", "Punishment and correctional treatment of offenders", "Civil litigation", "Forensic accounting"] },
+      { id: 17, module: "MODULE 2 — PENOLOGY, CORRECTIONS & PDL MANAGEMENT", question: "Rehabilitation primarily seeks to:", choices: ["Prepare offenders for constructive and law-abiding lives", "Increase sentences", "Eliminate all privileges", "Replace courts"] },
+      { id: 18, module: "MODULE 2 — PENOLOGY, CORRECTIONS & PDL MANAGEMENT", question: "Reintegration refers to:", choices: ["Returning a PDL to maximum security", "Preparing and supporting return to society", "Transferring a PDL between cells", "Extending imprisonment"] },
+      { id: 19, module: "MODULE 2 — PENOLOGY, CORRECTIONS & PDL MANAGEMENT", question: "Classification of PDLs assists correctional authorities in determining:", choices: ["Appropriate security and treatment arrangements", "Guilt or innocence", "Judicial sentences", "Election eligibility"] },
+      { id: 20, module: "MODULE 2 — PENOLOGY, CORRECTIONS & PDL MANAGEMENT", question: "Which approach is MOST consistent with professional corrections?", choices: ["Retaliation", "Humane custody combined with security and reformation", "Collective punishment", "Personal discretion without rules"] },
+      { id: 21, module: "MODULE 2 — PENOLOGY, CORRECTIONS & PDL MANAGEMENT", question: "A correctional officer facing an agitated PDL should generally first:", choices: ["Provoke the PDL", "Assess the threat and use appropriate de-escalation/procedures", "Immediately use maximum force", "Leave the institution"] },
+      { id: 22, module: "MODULE 2 — PENOLOGY, CORRECTIONS & PDL MANAGEMENT", question: "Which is a correctional treatment activity?", choices: ["Educational and skills training", "Political campaigning", "Criminal prosecution", "Election administration"] },
+      { id: 23, module: "MODULE 2 — PENOLOGY, CORRECTIONS & PDL MANAGEMENT", question: "Institutional discipline should primarily be:", choices: ["Arbitrary", "Consistent with rules, fairness, and due process", "Based on personal relationships", "Designed to humiliate"] },
+      { id: 24, module: "MODULE 2 — PENOLOGY, CORRECTIONS & PDL MANAGEMENT", question: "A PDL's loss of liberty means:", choices: ["Loss of all human rights", "Fundamental rights remain, subject to lawful restrictions inherent in confinement", "Personnel may impose any punishment", "Medical care is optional"] },
+      { id: 25, module: "MODULE 2 — PENOLOGY, CORRECTIONS & PDL MANAGEMENT", question: "The long-term objective of successful correctional intervention includes:", choices: ["Responsible reintegration", "Permanent institutional dependence", "Retaliation", "Social exclusion"] },
+      { id: 26, module: "MODULE 3 — GOVERNMENT ETHICS, HUMAN RIGHTS & GENERAL INFORMATION", question: "RA 6713 is the:", choices: ["Anti-Graft and Corrupt Practices Act", "Code of Conduct and Ethical Standards for Public Officials and Employees", "Bureau of Corrections Act", "Government Procurement Reform Act"] },
+      { id: 27, module: "MODULE 3 — GOVERNMENT ETHICS, HUMAN RIGHTS & GENERAL INFORMATION", question: "The Philippine Constitution declares that public office is a:", choices: ["Private privilege", "Public trust", "Political entitlement", "Personal property"] },
+      { id: 28, module: "MODULE 3 — GOVERNMENT ETHICS, HUMAN RIGHTS & GENERAL INFORMATION", question: "Which should take precedence in public service?", choices: ["Personal interest", "Public interest", "Supplier interest", "Family business interest"] },
+      { id: 29, module: "MODULE 3 — GOVERNMENT ETHICS, HUMAN RIGHTS & GENERAL INFORMATION", question: "A supplier transacting with your unit gives you an expensive personal gift. The BEST response is to:", choices: ["Accept secretly", "Decline and follow applicable ethical/reporting requirements", "Accept because it is customary", "Accept after office hours"] },
+      { id: 30, module: "MODULE 3 — GOVERNMENT ETHICS, HUMAN RIGHTS & GENERAL INFORMATION", question: "Conflict of interest occurs when:", choices: ["An employee disagrees with a coworker", "Personal interests may improperly affect official duties", "Two departments have different functions", "An employee takes leave"] },
+      { id: 31, module: "MODULE 3 — GOVERNMENT ETHICS, HUMAN RIGHTS & GENERAL INFORMATION", question: "Which demonstrates professionalism?", choices: ["Performing duties competently, responsibly, and fairly", "Favoring friends", "Concealing errors", "Avoiding accountability"] },
+      { id: 32, module: "MODULE 3 — GOVERNMENT ETHICS, HUMAN RIGHTS & GENERAL INFORMATION", question: "Which principle requires government personnel to answer for their official actions?", choices: ["Accountability", "Seniority", "Confidentiality", "Delegation"] },
+      { id: 33, module: "MODULE 3 — GOVERNMENT ETHICS, HUMAN RIGHTS & GENERAL INFORMATION", question: "A PDL reports alleged physical abuse by an employee. The appropriate action is to:", choices: ["Automatically dismiss the complaint", "Ensure safety and follow appropriate reporting/investigation procedures", "Punish the complainant", "Delete the report"] },
+      { id: 34, module: "MODULE 3 — GOVERNMENT ETHICS, HUMAN RIGHTS & GENERAL INFORMATION", question: "Which is consistent with human dignity?", choices: ["Humiliation as routine discipline", "Humane and respectful treatment", "Discrimination", "Collective retaliation"] },
+      { id: 35, module: "MODULE 3 — GOVERNMENT ETHICS, HUMAN RIGHTS & GENERAL INFORMATION", question: "Environmental management is relevant to public institutions because government agencies should:", choices: ["Disregard environmental impacts", "Observe applicable environmental responsibilities and sustainable practices", "Burn all waste", "Dispose of waste without controls"] },
+      { id: 36, module: "MODULE 4 — LEADERSHIP, SUPERVISION & PROCUREMENT", question: "A subordinate makes an honest but consequential mistake. What should the supervisor do FIRST?", choices: ["Publicly embarrass the employee", "Establish the facts and assess the circumstances", "Immediately dismiss the employee", "Conceal the mistake"] },
+      { id: 37, module: "MODULE 4 — LEADERSHIP, SUPERVISION & PROCUREMENT", question: "Delegation means:", choices: ["Giving responsibility while maintaining appropriate supervisory accountability", "Eliminating the supervisor's responsibility", "Giving unlimited authority", "Avoiding work"] },
+      { id: 38, module: "MODULE 4 — LEADERSHIP, SUPERVISION & PROCUREMENT", question: "Two employees are in conflict and operations are affected. The supervisor should first:", choices: ["Determine the facts and hear relevant sides", "Punish both automatically", "Ignore them", "Side with the more senior employee"] },
+      { id: 39, module: "MODULE 4 — LEADERSHIP, SUPERVISION & PROCUREMENT", question: "An employee is your close friend but commits the same violation as another employee. You should:", choices: ["Give your friend special consideration", "Apply applicable rules fairly and consistently", "Conceal your friend's violation", "Punish the other employee more severely"] },
+      { id: 40, module: "MODULE 4 — LEADERSHIP, SUPERVISION & PROCUREMENT", question: "Your superior issues an instruction that appears inconsistent with an established policy. The BEST initial response is to:", choices: ["Ignore your superior", "Clarify the instruction and verify the applicable policy", "Immediately post the disagreement publicly", "Follow it without considering legality or policy"] },
+      { id: 41, module: "MODULE 4 — LEADERSHIP, SUPERVISION & PROCUREMENT", question: "Market scoping is primarily useful for:", choices: ["Understanding relevant market conditions and informing procurement planning", "Selecting a predetermined winner", "Avoiding competition", "Guaranteeing a supplier a contract"] },
+      { id: 42, module: "MODULE 4 — LEADERSHIP, SUPERVISION & PROCUREMENT", question: "A supplier's market-scoping quotation is:", choices: ["Automatically an awarded contract", "Market information, subject to applicable procurement processes", "A guaranteed purchase order", "Proof the supplier must win"] },
+      { id: 43, module: "MODULE 4 — LEADERSHIP, SUPERVISION & PROCUREMENT", question: "You find a major discrepancy between a supplier's quotation and other market information. You should:", choices: ["Ignore it", "Validate the price, unit, specification, and other relevant details", "Secretly change the supplier's quotation", "Automatically use the highest price"] },
+      { id: 44, module: "MODULE 4 — LEADERSHIP, SUPERVISION & PROCUREMENT", question: "A supplier offers you money to influence procurement. You should:", choices: ["Accept if the supplier is qualified", "Decline and follow appropriate reporting procedures", "Negotiate", "Accept if it does not change the price"] },
+      { id: 45, module: "MODULE 4 — LEADERSHIP, SUPERVISION & PROCUREMENT", question: "A good unit head is best characterized by:", choices: ["Authority without accountability", "Integrity, sound judgment, fairness, communication, and accountability", "Popularity alone", "Seniority alone"] },
+      { id: 46, module: "MODULE 5 — ENGLISH / VERBAL ABILITY", question: "Choose the word closest in meaning to IMPARTIAL.", choices: ["Neutral", "Hostile", "Careless", "Biased"] },
+      { id: 47, module: "MODULE 5 — ENGLISH / VERBAL ABILITY", question: "The opposite of DILIGENT is:", choices: ["Industrious", "Careful", "Negligent", "Persistent"] },
+      { id: 48, module: "MODULE 5 — ENGLISH / VERBAL ABILITY", question: "MITIGATE means:", choices: ["Worsen", "Reduce or lessen", "Investigate", "Eliminate completely"] },
+      { id: 49, module: "MODULE 5 — ENGLISH / VERBAL ABILITY", question: "The officer's explanation was ambiguous. This means it was:", choices: ["Clear", "Unclear or open to more than one interpretation", "Accurate", "Concise"] },
+      { id: 50, module: "MODULE 5 — ENGLISH / VERBAL ABILITY", question: "Choose the grammatically correct sentence.", choices: ["Each of the employees are responsible.", "Each of the employees is responsible.", "Each of the employee are responsible.", "Each employees is responsible."] },
+      { id: 51, module: "MODULE 5 — ENGLISH / VERBAL ABILITY", question: "Neither the supervisor nor the employees _____ aware of the change.", choices: ["was", "is", "were", "has"] },
+      { id: 52, module: "MODULE 5 — ENGLISH / VERBAL ABILITY", question: "The reports _____ before the meeting began.", choices: ["had been submitted", "has submitted", "was submitting", "has been submit"] },
+      { id: 53, module: "MODULE 5 — ENGLISH / VERBAL ABILITY", question: "Identify the incorrect word: \"Every employee are required to observe the policy.\"", choices: ["Every", "employee", "are", "observe"] },
+      { id: 54, module: "MODULE 5 — ENGLISH / VERBAL ABILITY", question: "Choose the BEST sentence.", choices: ["The officer who conducted the inspection submitted the report yesterday.", "The officer conducted who the inspection yesterday report submitted.", "Yesterday the inspection officer who report submitted conducted.", "The report officer inspection conducted submitted yesterday who."] },
+      { id: 55, module: "MODULE 5 — ENGLISH / VERBAL ABILITY", question: "Complete the sentence: The supervisor postponed the decision _____ additional evidence could be reviewed.", choices: ["although", "so that", "unless", "despite"] },
+      { id: 56, module: "MODULE 5 — ENGLISH / VERBAL ABILITY", question: "Integrity is to honesty as diligence is to:", choices: ["Laziness", "Persistence", "Dishonesty", "Confusion"] },
+      { id: 57, module: "MODULE 5 — ENGLISH / VERBAL ABILITY", question: "Arrange the sentences into the most logical paragraph: 1. The discrepancy was then documented. 2. The pharmacist noticed that the physical inventory did not match the record. 3. Corrective measures were implemented after verification. 4. A recount and record review were conducted.", choices: ["2-4-1-3", "1-2-4-3", "4-2-3-1", "2-1-3-4"] },
+      { id: 58, module: "MODULE 5 — ENGLISH / VERBAL ABILITY", question: "PASSAGE: A supervisor noticed that several reports were repeatedly submitted late. Instead of immediately imposing sanctions, she reviewed the workflow and spoke with the personnel involved. She discovered that a newly introduced approval step caused an unexpected bottleneck. She clarified responsibilities and revised the workflow within authorized procedures. Timeliness subsequently improved. What was the immediate cause of the delayed reports?", choices: ["Employee dishonesty", "An approval bottleneck", "Lack of employees", "Deliberate insubordination"] },
+      { id: 59, module: "MODULE 5 — ENGLISH / VERBAL ABILITY", question: "What leadership quality is BEST demonstrated in the passage?", choices: ["Evidence-based problem solving", "Favoritism", "Avoidance", "Retaliation"] },
+      { id: 60, module: "MODULE 5 — ENGLISH / VERBAL ABILITY", question: "Which conclusion is BEST supported by the passage?", choices: ["Every delay is caused by poor employees.", "Supervisors should investigate causes before deciding on corrective action.", "Procedures should never be changed.", "Employees should never be disciplined."] },
+      { id: 61, module: "MODULE 6 — MATHEMATICS / NUMERICAL ABILITY", question: "25% of 480 is:", choices: ["100", "110", "120", "125"] },
+      { id: 62, module: "MODULE 6 — MATHEMATICS / NUMERICAL ABILITY", question: "A pharmacy received 1,200 tablets and issued 375. How many remain?", choices: ["725", "775", "825", "875"] },
+      { id: 63, module: "MODULE 6 — MATHEMATICS / NUMERICAL ABILITY", question: "Convert 3/8 to a decimal.", choices: ["0.275", "0.375", "0.425", "0.625"] },
+      { id: 64, module: "MODULE 6 — MATHEMATICS / NUMERICAL ABILITY", question: "What is the ratio 30:45 in simplest form?", choices: ["1:2", "2:3", "3:4", "3:5"] },
+      { id: 65, module: "MODULE 6 — MATHEMATICS / NUMERICAL ABILITY", question: "If 5 boxes cost ₱1,750, how much does one box cost?", choices: ["₱300", "₱325", "₱350", "₱375"] },
+      { id: 66, module: "MODULE 6 — MATHEMATICS / NUMERICAL ABILITY", question: "A ₱250,000 budget increases by 12%. What is the new budget?", choices: ["₱270,000", "₱275,000", "₱280,000", "₱282,000"] },
+      { id: 67, module: "MODULE 6 — MATHEMATICS / NUMERICAL ABILITY", question: "Find the next number: 2, 6, 12, 20, 30, ___", choices: ["36", "40", "42", "44"] },
+      { id: 68, module: "MODULE 6 — MATHEMATICS / NUMERICAL ABILITY", question: "Find the next number: 81, 27, 9, 3, ___", choices: ["0", "1", "1.5", "2"] },
+      { id: 69, module: "MODULE 6 — MATHEMATICS / NUMERICAL ABILITY", question: "Eight workers can complete a task in 6 days. Assuming equal productivity and a perfectly divisible workload, how many days would 12 workers need?", choices: ["3", "4", "6", "9"] },
+      { id: 70, module: "MODULE 6 — MATHEMATICS / NUMERICAL ABILITY", question: "A medicine costs ₱85 per unit. What is the cost of 240 units?", choices: ["₱19,400", "₱20,000", "₱20,400", "₱21,400"] },
+      { id: 71, module: "MODULE 7 — STATISTICS & DATA INTERPRETATION", question: "Scores: 70, 75, 80, 85, 90. What is the mean?", choices: ["75", "78", "80", "82"] },
+      { id: 72, module: "MODULE 7 — STATISTICS & DATA INTERPRETATION", question: "Scores: 70, 75, 80, 85, 90. What is the median?", choices: ["75", "80", "82.5", "85"] },
+      { id: 73, module: "MODULE 7 — STATISTICS & DATA INTERPRETATION", question: "Scores: 70, 75, 80, 85, 90. What is the range?", choices: ["15", "20", "25", "30"] },
+      { id: 74, module: "MODULE 7 — STATISTICS & DATA INTERPRETATION", question: "Scores: 70, 75, 80, 85, 90. Does this dataset have a mode?", choices: ["Yes, 70", "Yes, 80", "Yes, 90", "No"] },
+      { id: 75, module: "MODULE 7 — STATISTICS & DATA INTERPRETATION", question: "Which measure identifies the value occurring most frequently?", choices: ["Mean", "Median", "Mode", "Range"] },
+      { id: 76, module: "MODULE 7 — STATISTICS & DATA INTERPRETATION", question: "Table: January 800; February 1,000; March 1,200; April 1,000. Total prescriptions processed:", choices: ["3,800", "4,000", "4,200", "4,400"] },
+      { id: 77, module: "MODULE 7 — STATISTICS & DATA INTERPRETATION", question: "Same table. Average monthly prescriptions:", choices: ["900", "950", "1,000", "1,050"] },
+      { id: 78, module: "MODULE 7 — STATISTICS & DATA INTERPRETATION", question: "Same table. Percentage increase from January to March:", choices: ["25%", "40%", "50%", "60%"] },
+      { id: 79, module: "MODULE 7 — STATISTICS & DATA INTERPRETATION", question: "Same table. Which months had equal numbers?", choices: ["January and February", "February and April", "March and April", "January and April"] },
+      { id: 80, module: "MODULE 7 — STATISTICS & DATA INTERPRETATION", question: "Standard deviation primarily measures:", choices: ["The middle value", "How spread out values are around the mean", "The most frequent value", "The total number of observations"] },
+      { id: 81, module: "MODULE 8 — ANALYTICAL & LOGICAL REASONING", question: "All pharmacists are health professionals. Some health professionals are managers. Which conclusion MUST be true?", choices: ["All pharmacists are managers.", "Some pharmacists are managers.", "All managers are pharmacists.", "None of A–C necessarily follows."] },
+      { id: 82, module: "MODULE 8 — ANALYTICAL & LOGICAL REASONING", question: "All A are B. All B are C. Therefore:", choices: ["All C are A.", "All A are C.", "No A are C.", "Some C are not B."] },
+      { id: 83, module: "MODULE 8 — ANALYTICAL & LOGICAL REASONING", question: "A is older than B. B is older than C. D is older than A. Who is definitely oldest among A, B, C, and D?", choices: ["A", "B", "C", "D"] },
+      { id: 84, module: "MODULE 8 — ANALYTICAL & LOGICAL REASONING", question: "If MONDAY is coded as 123456 and DAY corresponds to 456, what does 123 represent?", choices: ["MON", "DAY", "NDA", "MOD"] },
+      { id: 85, module: "MODULE 8 — ANALYTICAL & LOGICAL REASONING", question: "Doctor : Hospital :: Teacher : _____", choices: ["Medicine", "School", "Student", "Book"] },
+      { id: 86, module: "MODULE 8 — ANALYTICAL & LOGICAL REASONING", question: "Which does NOT belong?", choices: ["Mean", "Median", "Mode", "Percentage"] },
+      { id: 87, module: "MODULE 8 — ANALYTICAL & LOGICAL REASONING", question: "A report cannot be approved unless it has been reviewed. The report was approved. What necessarily follows?", choices: ["It was reviewed.", "It was rejected.", "It contained no errors.", "The supervisor wrote it."] },
+      { id: 88, module: "MODULE 8 — ANALYTICAL & LOGICAL REASONING", question: "Five employees—A, B, C, D and E—stand in line. D is before A. A is before B. B is before C. Which must be true?", choices: ["C is before D.", "D is before C.", "E is last.", "A is first."] },
+      { id: 89, module: "MODULE 8 — ANALYTICAL & LOGICAL REASONING", question: "If some nurses are pharmacists and all pharmacists are licensed professionals, which conclusion necessarily follows?", choices: ["Some nurses are licensed professionals.", "All nurses are pharmacists.", "All licensed professionals are nurses.", "No nurses are licensed professionals."] },
+      { id: 90, module: "MODULE 8 — ANALYTICAL & LOGICAL REASONING", question: "A unit's error rate increased from 2% to 4% immediately after a new system was introduced. Which is the BEST conclusion?", choices: ["The new system definitely caused the increase.", "Employees deliberately caused the errors.", "The association should be investigated before causation is concluded.", "The system should immediately be removed."] },
+      { id: 91, module: "MODULE 9 — SITUATIONAL JUDGMENT", question: "During physical inventory, your team finds that 100 tablets are unaccounted for. Your FIRST action should be:", choices: ["Alter the records", "Verify the count and reconcile relevant records", "Accuse the pharmacist on duty", "Ignore it"] },
+      { id: 92, module: "MODULE 9 — SITUATIONAL JUDGMENT", question: "A subordinate tells you privately that another employee may be falsifying records. You should:", choices: ["Announce the allegation publicly", "Preserve confidentiality as appropriate and ensure the allegation is properly verified/reported", "Immediately dismiss the accused employee", "Ignore it because there is no proof yet"] },
+      { id: 93, module: "MODULE 9 — SITUATIONAL JUDGMENT", question: "Your unit is understaffed and workload has suddenly increased. As unit head, the BEST response is to:", choices: ["Stop accepting work", "Assess priorities, redistribute available resources appropriately, and elevate resource needs through proper channels", "Blame management", "Require unlimited overtime without regard to rules"] },
+      { id: 94, module: "MODULE 9 — SITUATIONAL JUDGMENT", question: "A senior employee refuses to follow a new authorized procedure because \"we've always done it the old way.\" You should:", choices: ["Allow the employee to continue", "Explain the authorized procedure and require appropriate compliance", "Cancel the procedure", "Ignore the employee"] },
+      { id: 95, module: "MODULE 9 — SITUATIONAL JUDGMENT", question: "You discover an error in a report you already submitted. The BEST action is to:", choices: ["Hope nobody notices", "Promptly disclose and correct it through appropriate procedures", "Delete the original secretly", "Blame your subordinate"] },
+      { id: 96, module: "MODULE 9 — SITUATIONAL JUDGMENT", question: "A subordinate performs exceptionally well. A good supervisor should:", choices: ["Ignore the achievement", "Appropriately recognize performance and support continued development", "Reduce the employee's duties", "Hide the accomplishment"] },
+      { id: 97, module: "MODULE 9 — SITUATIONAL JUDGMENT", question: "A PDL suddenly collapses in your area. Your FIRST priority should be:", choices: ["Finish paperwork", "Activate appropriate emergency/medical response procedures", "Determine disciplinary history", "Wait for visiting hours"] },
+      { id: 98, module: "MODULE 9 — SITUATIONAL JUDGMENT", question: "Confidential PDL information is requested by someone who has no demonstrated authority or legitimate need to access it. You should:", choices: ["Provide it as a courtesy", "Protect the information and follow applicable disclosure rules", "Post it publicly", "Ask another PDL for permission"] },
+      { id: 99, module: "MODULE 9 — SITUATIONAL JUDGMENT", question: "Your physical stock count repeatedly differs from the inventory system. The BEST long-term response is to:", choices: ["Keep adjusting the figures manually", "Perform root-cause analysis and strengthen appropriate inventory controls", "Stop conducting inventories", "Ignore small discrepancies"] },
+      { id: 100, module: "MODULE 9 — SITUATIONAL JUDGMENT", question: "You are promoted to lead employees who previously worked alongside you as peers. The BEST approach is to:", choices: ["Demonstrate authority immediately through strict punishment", "Establish professional expectations, communicate clearly, apply standards consistently, and lead by example", "Favor your closest former coworkers", "Avoid correcting anyone to preserve friendships"] }
     ];
 
     /* =========================================================
-       STATE
+       STATE & CONTROLLER LOGIC
        ========================================================= */
     let exam = [];
     let current = 0;
@@ -758,22 +853,41 @@
     let attemptsForThisQuestion = 0;
     let answeredCurrent = false;
 
+    // Process & build exam objects with answer keys applied
+    function processExamData() {
+      const answerKey = REVIEWED_ANSWER_KEY;
+      return RAW_QUESTIONS.map(q => {
+        const correctAnswer = answerKey[String(q.id)];
+        const correctIndex = correctAnswer.charCodeAt(0) - 65;
+        return {
+          id: q.id,
+          module: q.module,
+          question: q.question,
+          choices: q.choices,
+          correctAnswer: correctAnswer,
+          correctText: q.choices[correctIndex]
+        };
+      });
+    }
+
     /* =========================================================
        INITIALIZATION
        ========================================================= */
     window.addEventListener('DOMContentLoaded', function() {
-      // Load questions directly from examData
-      exam = examData || [];
+      try {
+        exam = processExamData();
+        document.getElementById('loading').classList.add('hidden');
 
-      document.getElementById('loading').classList.add('hidden');
+        if (!Array.isArray(exam) || exam.length === 0) {
+          showLoadError('No questions available to load.');
+          return;
+        }
 
-      if (!Array.isArray(exam) || exam.length === 0) {
-        showLoadError('No questions available to load.');
-        return;
+        document.getElementById('totalQuestionsCount').textContent = exam.length;
+        document.getElementById('startScreen').classList.remove('hidden');
+      } catch (err) {
+        showLoadError(err.message || 'Error parsing exam dataset.');
       }
-
-      document.getElementById('totalQuestionsCount').textContent = exam.length;
-      document.getElementById('startScreen').classList.remove('hidden');
     });
 
     /* =========================================================
